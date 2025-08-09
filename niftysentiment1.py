@@ -21,43 +21,7 @@ import joblib
 import sys
 import pickle
 
-# --- IMPORTS ---
-import streamlit as st
-from datetime import datetime
 
-# --- USER CREDENTIALS ---
-USERS = st.secrets["users"]
-
-# --- LOGIN FUNCTIONS ---
-def check_login():
-    return st.session_state.get("logged_in", False)
-
-def login_form():
-    st.title("🔒 Login to Dashboard")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    if st.button("Login"):
-        if username in USERS and USERS[username] == password:
-            st.session_state.logged_in = True
-            st.session_state.username = username
-            st.session_state.login_time = datetime.now()
-            st.experimental_rerun()
-        else:
-            st.error("❌ Invalid credentials")
-
-def logout_button():
-    if st.button("Logout"):
-        st.session_state.clear()
-        st.experimental_rerun()
-
-# --- LOGIN GATE ---
-if not check_login():
-    login_form()
-    st.stop()  # stop the script here if not logged in
-
-# --- IF LOGGED IN, SHOW YOUR EXISTING DASHBOARD ---
-st.sidebar.success(f"✅ Logged in as {st.session_state.username}")
-logout_button()
 
 LOG_FILE = "strike_log.pkl"
 
